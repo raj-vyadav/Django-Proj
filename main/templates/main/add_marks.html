@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Marks for Students</h2>
+    <form method="post" action="{% url 'add_marks' %}">
+      {% csrf_token %}
+      <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Select</th>
+                  <th>Roll No</th>
+                  <th>Name</th>
+                  <th>Subject</th>
+                  <th>Marks Obtained</th>
+                  <th>Total Marks</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for student in students %}
+              <tr>
+                  <!-- Add the checkbox for selecting students -->
+                  <td>
+                      <input type="checkbox" name="select_student_{{ student.user.id }}">
+                  </td>
+                  <td>{{ student.roll_no }}</td>
+                  <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                  <td>
+                      <input type="text" name="subject_{{ student.user.id }}" placeholder="Enter Subject">
+                  </td>
+                  <td>
+                      <input type="number" name="marks_obtained_{{ student.user.id }}" placeholder="Enter Marks">
+                  </td>
+                  <td>
+                      <input type="number" name="total_marks_{{ student.user.id }}" placeholder="Enter Total Marks">
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      <button type="submit" class="btn btn-primary">Submit Marks</button>
+  </form>
+  
+  
+
+    <h3 class="mt-5">Marks Records</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Roll No</th>
+                <th>Subject</th>
+                <th>Marks Obtained</th>
+                <th>Total Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in marks_list %}
+            <tr>
+                <td>{{ record.student.user.first_name }} {{ record.student.user.last_name }}</td>
+                <td>{{ record.student.roll_no }}</td>
+                <td>{{ record.subject }}</td>
+                <td>{{ record.marks_obtained }}</td>
+                <td>{{ record.total_marks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

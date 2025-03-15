@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}View Attendance{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4 text-center">Attendance Records</h1>
+
+    <!-- ✅ Attendance Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.student.name }}</td>
+                    <td>{{ attendance.date }}</td>
+                    <td>
+                        {% if attendance.status %}
+                            Present
+                        {% else %}
+                            Absent
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- ✅ End of Attendance Table -->
+
+    {% if not attendances %}
+    <div class="alert alert-warning" role="alert">
+        No attendance records available.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

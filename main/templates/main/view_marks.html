@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}View Marks{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4 text-center">Marks Records</h1>
+
+    <!-- ✅ Marks Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+              <tr>
+                  <th>Student Name</th>
+                  <th>Subject</th>
+                  <th>Marks Obtained</th>
+                  <th>Total Marks</th>
+                  <th>Percentage</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for mark in marks %}
+              <tr>
+                  <td>{{ mark.student.user.first_name }} {{ mark.student.user.last_name }}</td>
+                  <td>{{ mark.subject }}</td>
+                  <td>{{ mark.marks_obtained|floatformat:2 }}</td>
+                  <td>{{ mark.total_marks|floatformat:2 }}</td>
+                  
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+  
+    <!-- ✅ End of Marks Table -->
+
+    {% if not marks %}
+    <div class="alert alert-warning" role="alert">
+        No marks records available.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

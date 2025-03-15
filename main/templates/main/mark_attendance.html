@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Mark Attendance</h2>
+    <form method="post" action="/mark_attendance/">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Mark Attendance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.roll_no }}</td>
+                    <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                    <td>{{ student.department }}</td>
+                    <td>
+                        <input type="hidden" name="student_user_id" value="{{ student.user.id }}">
+                        <button type="submit" name="status" value="Present" class="btn btn-success">Present</button>
+                        <button type="submit" name="status" value="Absent" class="btn btn-danger">Absent</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <h3 class="mt-5">Attendance Records</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_list %}
+            <tr>
+
+                <td>{{ record.student.user.get_full_name }}</td>
+                <td>{{ record.date }}</td>
+                <td>
+                    {% if record.status %}
+                        Present
+                    {% else %}
+                        Absent
+                    {% endif %}
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

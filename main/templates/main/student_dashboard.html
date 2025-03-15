@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ student_data.name }}</h2>
+<div class="card">
+    <div class="card-body">
+        <p><strong>Roll No:</strong> {{ student_data.roll_no }}</p>
+        <p><strong>Department:</strong> {{ student_data.department }}</p>
+        <a href="{% url 'view_attendance' %}" class="btn btn-primary">View Attendance</a>
+        <a href="{% url 'view_marks' %}" class="btn btn-success">View Marks</a>
+    </div>
+</div>
+{% endblock %}

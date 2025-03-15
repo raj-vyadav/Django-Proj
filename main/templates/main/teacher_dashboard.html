@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ teacher_data.name }}</h2>
+<div class="card">
+    <div class="card-body">
+        <p><strong>Department:</strong> {{ teacher_data.department }}</p>
+        <a href="{% url 'mark_attendance' %}" class="btn btn-warning">Mark Attendance</a>
+        <a href="{% url 'add_marks' %}" class="btn btn-danger">Add Marks</a>
+        {% comment %} <a href="{% url 'add_student' %}" class="btn btn-danger">Add Students</a> {% endcomment %}
+    </div>
+</div>
+{% endblock %}
