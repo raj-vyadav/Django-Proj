@@ -5,3 +5,4 @@ django-bootstrap5==25.1
 django-crispy-forms==2.3
 sqlparse==0.5.3
 tzdata==2025.1
+gunicorn
