@@ -103,7 +103,8 @@ def teacher_dashboard(request):
 
 # Student Dashboard View
 def student_dashboard(request):
-    return render(request, 'main/student_dashboard.html')
+    student_data = get_object_or_404(Student, user=request.user)
+    return render(request, 'main/student_dashboard.html', 'student_data': student_data)
 
 # View Attendance
 @login_required(login_url='/login')
