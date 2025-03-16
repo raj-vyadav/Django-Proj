@@ -106,8 +106,14 @@ def student_dashboard(request):
     return render(request, 'main/student_dashboard.html')
 
 # View Attendance
+@login_required(login_url='/login')
 def view_attendance(request):
-    attendances = Attendance.objects.all()
+    if request.user.groups.filter(name='Students').exists():
+        # Fetch attendance for the logged-in student
+        attendances = Attendance.objects.filter(student=request.user.student)
+    else:
+        # Fetch all attendance records for non-students (e.g., teachers)
+        attendances = Attendance.objects.all()
     return render(request, 'main/view_attendance.html', {'attendances': attendances})
 
 # View Marks

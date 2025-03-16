@@ -1,44 +1,44 @@
+<!-- filepath: e:\Django-Proj-1\templates\main\view_attendance.html -->
 {% extends 'base.html' %}
 
-{% block title %}View Attendance{% endblock %}
-
 {% block content %}
-<div class="container">
+<div class="container mt-5">
     <h1 class="mb-4 text-center">Attendance Records</h1>
 
     <!-- ✅ Attendance Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+    <div class="table-responsive shadow-sm p-3 mb-5 bg-white rounded">
+        <table class="table table-hover table-striped table-bordered align-middle">
+            <thead class="table-dark text-center">
                 <tr>
-                    <th>Student Name</th>
-                    <th>Date</th>
-                    <th>Status</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
-                {% for attendance in attendances %}
-                <tr>
-                    <td>{{ attendance.student.name }}</td>
-                    <td>{{ attendance.date }}</td>
-                    <td>
-                        {% if attendance.status %}
-                            Present
-                        {% else %}
-                            Absent
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
+                {% if attendances %}
+                    {% for attendance in attendances %}
+                    <tr class="text-center">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ attendance.student.user.first_name }} {{ attendance.student.user.last_name }}</td>
+                        <td>{{ attendance.date }}</td>
+                        <td>
+                            {% if attendance.status %}
+                                <span class="badge bg-success">Present</span>
+                            {% else %}
+                                <span class="badge bg-danger">Absent</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No attendance records available.</td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
-    <!-- ✅ End of Attendance Table -->
-
-    {% if not attendances %}
-    <div class="alert alert-warning" role="alert">
-        No attendance records available.
-    </div>
-    {% endif %}
 </div>
 {% endblock %}
