@@ -99,7 +99,8 @@ def mark_attendance(request):
 
 # Teacher Dashboard View
 def teacher_dashboard(request):
-    return render(request, 'main/teacher_dashboard.html')
+    teacher_data = get_object_or_404(Teacher, user=request.user)
+    return render(request, 'main/teacher_dashboard.html', {'teacher_data': teacher_data})
 
 # Student Dashboard View
 def student_dashboard(request):
