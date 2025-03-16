@@ -70,8 +70,6 @@ def sign_up(request):
 # Mark Attendance View
 @login_required(login_url='/login')
 @permission_required('main.add_attendance', login_url='/login', raise_exception=True)
-@login_required(login_url='/login')
-@permission_required('main.add_attendance', login_url='/login', raise_exception=True)
 def mark_attendance(request):
     if not request.user.groups.filter(name='Teachers').exists():
         return redirect('home')  # Prevent non-teachers from accessing
