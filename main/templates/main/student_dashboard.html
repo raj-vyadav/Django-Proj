@@ -2,7 +2,7 @@
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ student_data.name }}</h2>
+<h2>Welcome, {{ student_data.user.first_name }} {{ student_data.user.last_name }}</h2>
 <div class="card">
     <div class="card-body">
         <p><strong>Roll No:</strong> {{ student_data.roll_no }}</p>
