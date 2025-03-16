@@ -128,27 +128,30 @@ def view_marks(request):
 @login_required(login_url='/login')
 def add_marks(request):
     if not request.user.groups.filter(name='Teachers').exists():
-        return redirect('home')  # Prevent non-teachers from accessing
+        return redirect('home')  # Restrict access to teachers
 
     students = Student.objects.all()
-    marks_list = Marks.objects.all()  # Fetch all marks records to display
+    marks_list = Marks.objects.all()  # Fetch existing marks to display
 
     if request.method == 'POST':
         errors = []
+        has_processed_any = False  # Flag to check if any student data was processed
+
         for student in students:
             # Check if the checkbox for this student is selected
             if request.POST.get(f"select_student_{student.user.id}"):
+                has_processed_any = True  # At least one checkbox is selected
                 subject = request.POST.get(f"subject_{student.user.id}")
                 marks_obtained = request.POST.get(f"marks_obtained_{student.user.id}")
                 total_marks = request.POST.get(f"total_marks_{student.user.id}")
 
-                # Validate the input
+                # Validate the input fields
                 if not subject or not marks_obtained or not total_marks:
                     errors.append(f"Missing data for {student.user.get_full_name()}. Please fill all fields.")
                     continue
 
                 try:
-                    # Check for duplicates and create a new record
+                    # Check for duplicate records
                     if Marks.objects.filter(student=student, subject=subject).exists():
                         errors.append(f"Marks for {student.user.get_full_name()} in {subject} already exist!")
                     else:
@@ -161,10 +164,15 @@ def add_marks(request):
                 except Exception as e:
                     errors.append(f"An error occurred for {student.user.get_full_name()}: {e}")
 
-        if errors:
+        # If no checkbox was selected, raise an error
+        if not has_processed_any:
+            messages.error(request, "No students were selected. Please select at least one checkbox.")
+        elif errors:
+            # If there were any errors during processing, display them
             for error in errors:
                 messages.error(request, error)
         else:
+            # If everything was processed successfully
             messages.success(request, "Marks added successfully for the selected students!")
 
     return render(request, 'main/add_marks.html', {'students': students, 'marks_list': marks_list})
