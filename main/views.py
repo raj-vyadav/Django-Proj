@@ -125,7 +125,9 @@ def view_marks(request):
         return render(request, 'main/view_marks.html', {'marks': marks})
     else:
         return redirect('home')  # Redirect non-students to home
+    
 @login_required(login_url='/login')
+@permission_required('main.add_marks', login_url='/login', raise_exception=True)
 def add_marks(request):
     if not request.user.groups.filter(name='Teachers').exists():
         return redirect('home')  # Restrict access to teachers
