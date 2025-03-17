@@ -78,21 +78,18 @@ def mark_attendance(request):
     attendance_list = Attendance.objects.all()  # Fetch all attendance records
 
     if request.method == 'POST':
-        student_user_id = request.POST.get('student_user_id')
-        date = datetime.date.today()  # Current date
-        status = request.POST.get('status') == "Present"  # Convert "Present" to True, otherwise False
+        for student in students:
+            attendance_status = request.POST.get(f'attendance_{student.user.id}')
+            if attendance_status:  # Ensure there's input for this student
+                status = attendance_status == "Present"  # Convert "Present" to True, otherwise False
 
-        # Fetch the User and Student objects
-        user = get_object_or_404(User, id=student_user_id)
-        student = get_object_or_404(Student, user=user)
-
-        # Check for duplicate attendance for the same date
-        if Attendance.objects.filter(student=student, date=date).exists():
-            messages.error(request, f"Attendance for {student.user.get_full_name()} on {date} already exists!")
-        else:
-            # Create new attendance record
-            Attendance.objects.create(student=student, date=date, status=status)
-            messages.success(request, f"Attendance marked for {student.user.get_full_name()} as {'Present' if status else 'Absent'}.")
+                # Check for duplicate attendance for the same date
+                if Attendance.objects.filter(student=student, date=datetime.date.today()).exists():
+                    messages.error(request, f"Attendance for {student.user.get_full_name()} on {datetime.date.today()} already exists!")
+                else:
+                    # Create new attendance record
+                    Attendance.objects.create(student=student, date=datetime.date.today(), status=status)
+                    messages.success(request, f"Attendance marked for {student.user.get_full_name()} as {'Present' if status else 'Absent'}.")
 
     return render(request, 'main/mark_attendance.html', {'students': students, 'attendance_list': attendance_list})
 

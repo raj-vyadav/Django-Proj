@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Mark Attendance</h2>
+    mark_attendance.html
     <form method="post" action="/mark_attendance/">
         {% csrf_token %}
         <table class="table">
@@ -10,7 +11,8 @@
                     <th>Roll No</th>
                     <th>Name</th>
                     <th>Department</th>
-                    <th>Mark Attendance</th>
+                    <th>Present</th>
+                    <th>Absent</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,14 +22,16 @@
                     <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
                     <td>{{ student.department }}</td>
                     <td>
-                        <input type="hidden" name="student_user_id" value="{{ student.user.id }}">
-                        <button type="submit" name="status" value="Present" class="btn btn-success">Present</button>
-                        <button type="submit" name="status" value="Absent" class="btn btn-danger">Absent</button>
+                        <input type="radio" name="attendance_{{ student.user.id }}" value="Present">
+                    </td>
+                    <td>
+                        <input type="radio" name="attendance_{{ student.user.id }}" value="Absent">
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <button type="submit" class="btn btn-primary">Submit Attendance</button>
     </form>
 
     <h3 class="mt-5">Attendance Records</h3>
